@@ -168,7 +168,7 @@ section{position:relative}
    blocks the travertine scale and the laurel gold are handed back their
    original light values, so type on top stays legible without any rule
    further down needing to know where it sits. */
-.hero,.phero,.city,.lightbox,.sc-stage,.figure figcaption,.nav{
+.hero,.phero,.city,.lightbox,.sc-stage,.figure figcaption{
   --stone-100:var(--on-scrim-100);
   --stone-200:var(--on-scrim-200);
   --stone-300:var(--on-scrim-300);
@@ -191,40 +191,35 @@ section{position:relative}
 .hero .btn-ghost:hover,.phero .btn-ghost:hover,.city .btn-ghost:hover{border-color:var(--stone-050);color:var(--ink-900)}
 
 /* ---------- Brand mark ---------- */
-.mark{display:flex;align-items:center;gap:.85rem}
-.mark svg{width:38px;height:38px;flex:none;transition:filter .5s var(--ease)}
-/* The laurel is drawn in pale gold for the scrim over the hero. The moment
-   the bar takes a travertine ground of its own it has to darken or vanish. */
-.nav.solid .mark svg,body.menu-open .mark svg{filter:brightness(.6) saturate(1.35)}
-footer .mark svg{color:var(--gold-700)}
-.mark-txt{display:flex;flex-direction:column;line-height:1}
-.mark-txt b{font-family:var(--font-display);font-weight:500;font-size:1.08rem;letter-spacing:.16em;text-transform:uppercase}
-.mark-txt span{font-size:.55rem;font-weight:500;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-300);margin-top:.45rem}
+/* The supplied lockup, whole: wreath above, name beneath, in the proportion it
+   was drawn. Setting the name as type instead never matched — the artwork's
+   wordmark is small against the crest, and live text at a readable size came
+   out three times too wide. So the artwork carries it, sized to be read.
+   The bar is travertine at every scroll position, so one colourway does. */
+.mark{display:block;line-height:0;flex:none}
+.mark-logo{display:block;height:78px;width:auto}
+footer .mark-logo{height:116px}
 
 /* ---------- Nav ---------- */
+/* The bar keeps its travertine ground at every scroll position — it never
+   lies over the arrival rendering, so the picture is never darkened to carry
+   it and the mark never has to exist in two colourways. Sticky rather than
+   fixed: in flow it reserves its own strip and the photograph starts below. */
 .nav{
-  position:fixed;inset:0 0 auto;z-index:100;
+  position:sticky;top:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;gap:2rem;
-  padding:1.35rem var(--gutter);
-  transition:background .5s var(--ease),padding .5s var(--ease),border-color .5s;
-  border-bottom:1px solid transparent;
-}
-.nav::before{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:linear-gradient(180deg,rgba(6,6,7,.78),rgba(6,6,7,0));
-  transition:opacity .5s var(--ease);
-}
-.nav.solid{
+  padding:.95rem var(--gutter);
   /* The frost stays — without it the copy behind the bar ghosts through
-     sharp. Trimmed to one filter at a smaller radius: the backdrop is
-     re-filtered on every scrolled frame. */
-  background:rgba(251,248,243,.90);backdrop-filter:blur(12px);
-  padding-block:.85rem;border-bottom-color:rgba(31,28,23,.12);
-  box-shadow:0 1px 24px rgba(31,28,23,.06);
+     sharp. One filter at a small radius: the backdrop is re-filtered on
+     every scrolled frame. */
+  background:rgba(251,248,243,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(31,28,23,.12);
+  transition:box-shadow .5s var(--ease);
 }
-/* Once the bar has a travertine ground of its own it leaves the media scope.
-   Same when the drawer is open — the burger has to darken over it. */
-.nav.solid,body.menu-open .nav{
+/* Once the page has moved under it the bar lifts off the copy a little. */
+.nav.solid{box-shadow:0 1px 24px rgba(31,28,23,.07)}
+/* The bar reads on travertine, and so does the drawer behind it. */
+.nav,body.menu-open .nav{
   --stone-100:var(--on-stone-100);--stone-200:var(--on-stone-200);
   --stone-300:var(--on-stone-300);--stone-400:var(--on-stone-400);
   --gold-100:var(--on-stone-gold-100);--gold-200:var(--on-stone-gold-200);
@@ -234,7 +229,6 @@ footer .mark svg{color:var(--gold-700)}
   --line:var(--on-stone-line);--line-soft:var(--on-stone-line-soft);
   color:var(--stone-100);
 }
-.nav.solid::before,body.menu-open .nav::before{opacity:0}
 .nav-links{display:flex;align-items:center;gap:clamp(1.1rem,2vw,2.2rem);list-style:none;margin:0;padding:0}
 .nav-links a{
   font-size:.79rem;font-weight:500;letter-spacing:.11em;text-transform:uppercase;
@@ -306,24 +300,54 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .stone .link-arrow:hover{color:#6F520D;border-bottom-color:var(--gold-700)}
 
 /* ---------- Hero ---------- */
-.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
-.hero-media{position:absolute;inset:0;z-index:-2}
-.hero-media img{width:100%;height:100%;object-fit:cover;animation:kb 30s var(--ease) infinite alternate}
-@keyframes kb{from{transform:scale(1.04)}to{transform:scale(1.12) translate3d(-1.2%,-1.4%,0)}}
-.hero-media::after{
-  content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(180deg,rgba(6,6,8,.66) 0%,rgba(6,6,8,.1) 34%,rgba(6,6,8,.56) 70%,rgba(6,6,8,.95) 100%),
-    radial-gradient(120% 80% at 50% 110%,rgba(203,166,48,.14),transparent 62%);
+/* The client picks the arrival rendering, and it has to arrive whole. That
+   rules out the full-bleed crop this hero used to be: at 2.7:1 the picture
+   cannot also carry a display headline without the type landing across the
+   building. So the picture runs the width of the page at its own height,
+   nothing over it but the bar, and the headline takes the ink below. */
+.hero{
+  position:relative;display:flex;flex-direction:column;overflow:hidden;isolation:isolate;
+  background:var(--ink-900);
 }
-.hero-inner{width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--gutter) clamp(72px,10vh,120px)}
-.hero h1{margin:.4rem 0 1.5rem;text-shadow:0 6px 46px rgba(0,0,0,.6)}
+/* Full width at the rendering's own ratio, but never so tall that the opening
+   line below it needs a scroll to reach. Where the cap bites, it takes the
+   empty pavement at the foot of the frame rather than the building. */
+.hero-media{position:relative;flex:none;width:100%;aspect-ratio:1582/592;max-height:62vh;overflow:hidden}
+.hero-media img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 34%}
+/* The bar brings its own scrim, so the sky is left alone. This one only
+   feathers the foot of the picture into the ink the headline sits on. */
+.hero-media::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,6,8,0) 72%,rgba(6,6,8,.55) 92%,var(--ink-900) 100%);
+}
+/* Under the picture the opening reads as a project record: what the hotel is
+   on the left, the figures a developer asks for first on the right. */
+.hero-inner{
+  width:100%;max-width:var(--max);margin:0 auto;
+  padding:clamp(34px,4.5vw,62px) var(--gutter) clamp(64px,8vh,104px);
+  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+  gap:clamp(34px,4vw,74px);align-items:start;
+}
+/* .d1 is scaled off the viewport; in a column two thirds that wide it has to
+   come down or the headline runs to four lines and shoves the rest under. */
+.hero h1{font-size:clamp(2.45rem,4.7vw,4.1rem);margin:.4rem 0 1.5rem;text-shadow:0 6px 46px rgba(0,0,0,.6)}
 .hero h1 em{font-style:italic;display:block}
-.hero-sub{display:flex;flex-wrap:wrap;gap:.75rem 1.6rem;align-items:center;font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--stone-200);margin-bottom:2.4rem}
-.hero-sub span{display:flex;align-items:center;gap:1.6rem}
-.hero-sub span::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--gold-500)}
-.hero-sub span:last-child::after{display:none}
+.hero-lead .lede{margin-bottom:2.4rem;max-width:54ch}
 .hero-actions{display:flex;flex-wrap:wrap;gap:1rem}
+/* The fact pairs sit on the baseline of the headline, not the eyebrow, so the
+   two columns read as one block rather than two stacks that happen to align. */
+.hero-facts{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(24px,2.6vw,38px) clamp(20px,2.4vw,38px);
+  margin:clamp(10px,1.4vw,22px) 0 0;
+}
+.hero-facts dt{
+  font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--stone-400);margin-bottom:.7rem;
+}
+.hero-facts dd{margin:0;font-size:.97rem;line-height:1.5;color:var(--stone-100)}
+.hero-facts a{color:var(--gold-200);border-bottom:1px solid var(--line);transition:border-color .35s var(--ease),color .35s var(--ease)}
+.hero-facts a:hover{color:var(--gold-100);border-bottom-color:currentColor}
 .scroll-cue{
   position:absolute;right:var(--gutter);bottom:clamp(72px,10vh,120px);z-index:2;
   writing-mode:vertical-rl;font-size:.7rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
@@ -347,7 +371,6 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .rv-d1{transition-delay:.09s}.rv-d2{transition-delay:.18s}.rv-d3{transition-delay:.27s}.rv-d4{transition-delay:.36s}
 @media (prefers-reduced-motion:reduce){
   .rv{opacity:1;transform:none;transition:none}
-  .hero-media img{animation:none}
   html{scroll-behavior:auto}
 }
 
@@ -409,7 +432,8 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,88px);align-items:center}
 .split.rev .split-media{order:2}
 /* The crest ships as a JPEG on white; multiply sinks its box into the travertine. */
-.crest{mix-blend-mode:multiply}
+/* The lockup is cut out now, so it no longer needs multiply to lose a card. */
+.crest{display:block}
 .split-body{max-width:58ch}
 
 /* ---------- Gallery ---------- */
@@ -554,14 +578,13 @@ footer{background:var(--surface-2);border-top:1px solid var(--line-soft);padding
 .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:.78rem}
 .foot a,.foot p{font-size:.98rem;color:var(--stone-400);margin:0;transition:color .3s}
 .foot a:hover{color:var(--gold-200)}
+
 .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:clamp(30px,4vw,58px);margin-bottom:clamp(42px,5vw,66px)}
 .foot-bottom{display:flex;justify-content:space-between;gap:1.4rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid var(--line-soft);font-size:.82rem;color:var(--stone-500)}
 
-/* Ambient motion — the hero pan, the scroll cue, the marquee — runs forever.
-   Off-screen it still costs a composited frame every 16ms, so it rests. */
-/* .hero-media img sets the `animation` shorthand, which resets play-state,
-   so that pair has to be named at equal specificity to be overridden. */
-.anim-rest,.anim-rest::after,.hero-media img.anim-rest{animation-play-state:paused}
+/* Ambient motion — the scroll cue, the marquee — runs forever. Off-screen it
+   still costs a composited frame every 16ms, so it rests. */
+.anim-rest,.anim-rest::after{animation-play-state:paused}
 
 /* ==========================================================================
    Cookie notice — a card in the corner rather than a bar across the foot,
@@ -606,6 +629,21 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
 }
 
 /* ---------- Responsive ---------- */
+@media (max-width:900px){
+  .mark-logo{height:68px}
+  footer .mark-logo{height:100px}
+}
+@media (max-width:560px){
+  .mark-logo{height:58px}
+  footer .mark-logo{height:86px}
+}
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:minmax(0,1fr);gap:clamp(26px,4vw,42px)}
+  .hero-facts{margin-top:0}
+}
+@media (max-width:460px){
+  .hero-facts{grid-template-columns:minmax(0,1fr)}
+}
 @media (max-width:1100px){
   .nav-links{display:none}
   .burger{display:flex}
