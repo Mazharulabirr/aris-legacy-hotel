@@ -400,6 +400,28 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .ratio-1x1{aspect-ratio:1/1}
 .ratio-21x9{aspect-ratio:21/9}
 
+/* A plate — a map or drawing shown whole on the page ground, never cropped,
+   and never zoomed on hover the way photography is. */
+.plate{background:var(--surface)}
+.plate img{height:auto;object-fit:contain}
+.plate:hover img{transform:none}
+.plate[data-lb]{cursor:zoom-in}
+
+/* A caption set under a figure rather than over it — the overlay figcaption
+   darkens artwork that has to stay readable, a map above all. */
+.fig-cap{margin-top:.95rem;font-size:.82rem;letter-spacing:.02em;max-width:78ch}
+
+/* Editorial two-column body: the title column carries the eyebrow, the
+   heading and whatever closes the section, so it never trails off into
+   dead space beside a tall run of prose. */
+.ed{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(30px,4vw,64px);align-items:start}
+.ed-title>.d2{margin-top:.9rem}
+.ed-body>.lede:first-child{margin-top:0}
+/* The closing furniture sits under the title, not stranded below the fold
+   of the prose column. */
+.ed-title>.aud{margin-top:clamp(26px,3vw,40px)}
+.ed-title>.link-row{margin-top:clamp(24px,2.6vw,36px)}
+
 .card{
   position:relative;
   border:1px solid var(--line-soft);padding:clamp(28px,3vw,42px);
@@ -658,7 +680,7 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
   .stats{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:820px){
-  .g2,.g3,.split,.room{grid-template-columns:1fr}
+  .g2,.g3,.split,.room,.ed{grid-template-columns:1fr}
   .split.rev .split-media,.room:nth-child(even) .room-media{order:0}
   .sp-3,.sp-4,.sp-5,.sp-6,.sp-7,.sp-8{grid-column:span 12}
   .sp-half{grid-column:span 6}
