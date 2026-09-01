@@ -174,6 +174,27 @@
     go(0);
   });
 
+  /* ---------- Rooms hero carousel ---------- */
+  document.querySelectorAll('[data-room-hero]').forEach(function (hero) {
+    var frames = Array.prototype.slice.call(hero.querySelectorAll('.room-phero-media img'));
+    var current = hero.querySelector('.room-phero-current');
+    var previous = hero.querySelector('.room-phero-prev');
+    var next = hero.querySelector('.room-phero-next');
+    if (frames.length < 2) return;
+    var index = 0;
+
+    function go(n) {
+      index = (n + frames.length) % frames.length;
+      frames.forEach(function (frame, frameIndex) {
+        frame.classList.toggle('on', frameIndex === index);
+      });
+      if (current) current.textContent = String(index + 1).padStart(2, '0');
+    }
+
+    if (previous) previous.addEventListener('click', function () { go(index - 1); });
+    if (next) next.addEventListener('click', function () { go(index + 1); });
+  });
+
   /* ---------- Lightbox ---------- */
   var items = Array.prototype.slice.call(document.querySelectorAll('[data-lb]'));
   if (items.length) {

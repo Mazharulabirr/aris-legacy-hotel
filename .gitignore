@@ -12,3 +12,7 @@ __pycache__/
 # Working source material, kept local
 assets/img/pdf/
 assets/img/Design 3/
+
+# Local page captures for the client
+screenshots/
+_capture.mjs
