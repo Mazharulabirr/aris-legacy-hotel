@@ -367,6 +367,11 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .phero-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
 .phero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,8,.82),rgba(6,6,8,.3) 46%,rgba(6,6,8,.94))}
 .phero .wrap{padding-bottom:clamp(48px,7vh,86px);width:100%}
+.room-phero-media img{position:absolute;inset:0;opacity:0;transition:opacity .65s var(--ease)}
+.room-phero-media img.on{opacity:1}
+.room-phero-controls{position:absolute;right:var(--gutter);bottom:clamp(28px,4vw,52px);z-index:2;display:flex;align-items:center;gap:.85rem;color:var(--stone-050);font-size:.68rem;letter-spacing:.15em}
+.room-phero-controls button{display:grid;place-items:center;width:2.65rem;height:2.65rem;border:1px solid rgba(244,238,227,.5);background:rgba(6,6,8,.22);color:inherit;font:inherit;font-size:1.1rem;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease)}
+.room-phero-controls button:hover{background:var(--stone-050);border-color:var(--stone-050);color:var(--ink-900)}
 .crumb{font-size:.76rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--stone-400);margin-bottom:1.2rem}
 .crumb a:hover{color:var(--gold-200)}
 
@@ -467,6 +472,15 @@ body.menu-open .drawer a{transform:none;opacity:1}
 /* The lockup is cut out now, so it no longer needs multiply to lose a card. */
 .crest{display:block}
 .split-body{max-width:58ch}
+
+/* Experiences uses supplied renders with different native proportions. Keep
+   each rendering whole and bring the accompanying copy close enough to read
+   as one composed feature rather than two disconnected columns. */
+.experience-feature .wrap.split{gap:clamp(24px,3vw,48px)}
+.experience-gym-feature .wrap.split{grid-template-columns:.94fr 1.06fr}
+.experience-gym-feature .figure{aspect-ratio:617/317}
+.experience-roof-feature .figure{aspect-ratio:820/612}
+.experience-outlots .figure{aspect-ratio:595/437}
 
 /* ---------- Gallery ---------- */
 .gal{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,1.4vw,20px)}
@@ -680,7 +694,7 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
 @media (max-width:460px){
   .hero-facts{grid-template-columns:minmax(0,1fr)}
 }
-@media (max-width:1100px){
+@media (max-width:1180px){
   .nav-links{display:none}
   .burger{display:flex}
   .nav-cta .btn{display:none}
@@ -690,6 +704,7 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
 }
 @media (max-width:820px){
   .g2,.g3,.split,.room,.ed{grid-template-columns:1fr}
+  .experience-gym-feature .wrap.split{grid-template-columns:1fr}
   .split.rev .split-media,.room:nth-child(even) .room-media{order:0}
   .sp-3,.sp-4,.sp-5,.sp-6,.sp-7,.sp-8{grid-column:span 12}
   .sp-half{grid-column:span 6}
@@ -885,6 +900,7 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
    turns into two lines and the rule ends up orphaned above the words. */
 @media (max-width:620px){
   .eyebrow{font-size:.68rem;letter-spacing:.13em;gap:.7rem}
+  .room-phero-controls{top:16px;right:var(--gutter);bottom:auto}
 }
 
 /* The two hero calls sit side by side rather than stacked: two buttons of the
@@ -3159,6 +3175,27 @@ document.querySelectorAll('[data-lbimg]').forEach(function (el) {
     }
 
     go(0);
+  });
+
+  /* ---------- Rooms hero carousel ---------- */
+  document.querySelectorAll('[data-room-hero]').forEach(function (hero) {
+    var frames = Array.prototype.slice.call(hero.querySelectorAll('.room-phero-media img'));
+    var current = hero.querySelector('.room-phero-current');
+    var previous = hero.querySelector('.room-phero-prev');
+    var next = hero.querySelector('.room-phero-next');
+    if (frames.length < 2) return;
+    var index = 0;
+
+    function go(n) {
+      index = (n + frames.length) % frames.length;
+      frames.forEach(function (frame, frameIndex) {
+        frame.classList.toggle('on', frameIndex === index);
+      });
+      if (current) current.textContent = String(index + 1).padStart(2, '0');
+    }
+
+    if (previous) previous.addEventListener('click', function () { go(index - 1); });
+    if (next) next.addEventListener('click', function () { go(index + 1); });
   });
 
   /* ---------- Lightbox ---------- */
