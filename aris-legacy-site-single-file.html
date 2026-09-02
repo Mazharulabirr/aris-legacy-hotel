@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FBF8F3">
 <title>Aris Legacy Hotel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -367,11 +373,6 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .phero-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
 .phero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,8,.82),rgba(6,6,8,.3) 46%,rgba(6,6,8,.94))}
 .phero .wrap{padding-bottom:clamp(48px,7vh,86px);width:100%}
-.room-phero-media img{position:absolute;inset:0;opacity:0;transition:opacity .65s var(--ease)}
-.room-phero-media img.on{opacity:1}
-.room-phero-controls{position:absolute;right:var(--gutter);bottom:clamp(28px,4vw,52px);z-index:2;display:flex;align-items:center;gap:.85rem;color:var(--stone-050);font-size:.68rem;letter-spacing:.15em}
-.room-phero-controls button{display:grid;place-items:center;width:2.65rem;height:2.65rem;border:1px solid rgba(244,238,227,.5);background:rgba(6,6,8,.22);color:inherit;font:inherit;font-size:1.1rem;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease)}
-.room-phero-controls button:hover{background:var(--stone-050);border-color:var(--stone-050);color:var(--ink-900)}
 .crumb{font-size:.76rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--stone-400);margin-bottom:1.2rem}
 .crumb a:hover{color:var(--gold-200)}
 
@@ -399,6 +400,7 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .figure::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(31,28,23,.10)}
 .figure img{width:100%;height:100%;object-fit:cover;transition:transform 1.5s var(--ease)}
 .figure:hover img{transform:scale(1.05)}
+.figure.static-media:hover img{transform:none}
 .figure figcaption{
   position:absolute;left:0;right:0;bottom:0;padding:1.6rem 1.5rem 1.35rem;z-index:1;
   background:linear-gradient(transparent,rgba(6,6,8,.9) 55%);
@@ -473,6 +475,11 @@ body.menu-open .drawer a{transform:none;opacity:1}
 .crest{display:block}
 .split-body{max-width:58ch}
 
+/* Give the location plan enough room for its aerial detail while preserving
+   the full source image rather than cropping its framed insets. */
+.location-feature{grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr)}
+.location-map-figure{aspect-ratio:637/492}
+
 /* Experiences uses supplied renders with different native proportions. Keep
    each rendering whole and bring the accompanying copy close enough to read
    as one composed feature rather than two disconnected columns. */
@@ -501,7 +508,11 @@ body.menu-open .drawer a{transform:none;opacity:1}
 
 /* ---------- Room list ---------- */
 .room{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(26px,4vw,70px);align-items:center;padding-block:clamp(42px,5vw,76px);border-top:1px solid var(--line-soft)}
+.room:nth-child(even){grid-template-columns:.95fr 1.05fr}
 .room:nth-child(even) .room-media{order:2}
+.room-heading{font-size:clamp(1.4rem,2.05vw,1.85rem);line-height:1.15}
+.room-heading .room-name{display:block;white-space:nowrap}
+.room-heading .room-subtitle{display:block;margin-top:.42rem;font-family:var(--font-ui);font-size:clamp(.7rem,.9vw,.84rem);font-weight:600;letter-spacing:.15em;line-height:1.35;text-transform:uppercase;color:var(--gold-300)}
 .room-meta{display:flex;flex-wrap:wrap;gap:.55rem .9rem;margin:1.5rem 0 1.7rem;list-style:none;padding:0}
 .room-meta li{font-size:.76rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--stone-300);border:1px solid var(--line-soft);padding:.46rem .85rem}
 .stone .room{border-color:rgba(20,20,18,.13)}
@@ -711,6 +722,9 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
   .scroll-cue{display:none}
   .count{grid-template-columns:repeat(2,1fr)}
 }
+@media (max-width:420px){
+  .room-heading .room-name{white-space:normal}
+}
 @media (max-width:560px){
   body{font-size:16px}
   .foot-grid{grid-template-columns:1fr}
@@ -900,7 +914,6 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
    turns into two lines and the rule ends up orphaned above the words. */
 @media (max-width:620px){
   .eyebrow{font-size:.68rem;letter-spacing:.13em;gap:.7rem}
-  .room-phero-controls{top:16px;right:var(--gutter);bottom:auto}
 }
 
 /* The two hero calls sit side by side rather than stacked: two buttons of the
@@ -974,6 +987,35 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
   .ladder li{gap:12px}
 }
 
+/* Mobile is a visual-first format. Editorial copy stays aligned to the reading
+   gutter, while photography, drawings and plans extend into the outer edges.
+   This gives supplied imagery a useful viewing size instead of leaving it in
+   a narrow desktop-derived column. */
+@media (max-width:680px){
+  :root{--gutter:16px}
+  .split,.room{gap:28px}
+  .room{padding-block:52px}
+
+  .split-media,.room-media,
+  .gal,.sc-stage,
+  .wrap > .figure,.wrap-wide > .figure,
+  .g2 > .figure,.g3 > .figure,.g4 > .figure,
+  .g2 > .plate,.g3 > .plate,.g4 > .plate{
+    width:calc(100% + var(--gutter) * 2);
+    margin-inline:calc(var(--gutter) * -1);
+  }
+
+  .split-media .figure,.room-media .figure,
+  .gal > .figure,.sc-stage,
+  .wrap > .figure,.wrap-wide > .figure,
+  .g2 > .figure,.g3 > .figure,.g4 > .figure,
+  .g2 > .plate,.g3 > .plate,.g4 > .plate{border-radius:0}
+
+  .room-media .figure{aspect-ratio:16/10}
+  .gal{gap:12px}
+  .gal > .figure{width:100%;margin-inline:0}
+}
+
 /* --- single-page bundle: routing --- */
 .page[hidden]{display:none}
 .page{animation:pgin .5s var(--ease) both}
@@ -981,6 +1023,8 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
 @media (prefers-reduced-motion:reduce){.page{animation:none}}
 :focus-visible{outline:2px solid var(--gold-500);outline-offset:3px}
 </style>
+</head>
+<body>
 <!-- ============ NAV ============ -->
 <header class="nav">
   <a class="mark" href="#/" aria-label="Aris Legacy Hotel — home">
@@ -3411,3 +3455,5 @@ document.querySelectorAll('[data-lbimg]').forEach(function (el) {
 })();
 
 </script>
+</body>
+</html>

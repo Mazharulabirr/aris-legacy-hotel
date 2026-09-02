@@ -9,7 +9,77 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20260902-mobile">
+<style>
+/* Rooms page mobile layout lives here as well as in the shared stylesheet so
+   the local file cannot be held on an outdated cached desktop grid. */
+@media (max-width:820px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  .room-phero{min-height:clamp(500px,72svh,680px)}
+  .room-phero .wrap{padding-bottom:44px}
+  .room-phero .lede{max-width:34ch;line-height:1.55}
+
+  .split,.room,.room:nth-child(even){
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+  }
+  .split{gap:30px}
+  .room{gap:26px;padding-block:48px;align-items:start}
+  .room:nth-child(even) .room-media{order:0}
+  .room > *,.split > *{width:100%;min-width:0}
+
+  .rooms-list .room{width:100%;margin-inline:0}
+  .rooms-list .room-media{
+    display:block;width:100%!important;max-width:none!important;
+    margin:0!important;padding:0!important;
+  }
+  .room-media .figure{
+    display:block;width:100%!important;height:auto;aspect-ratio:5/3;
+    margin:0!important;
+    background:transparent;
+    box-shadow:0 10px 28px rgba(31,28,23,.1);
+  }
+  .room-media img{
+    display:block;width:100%!important;height:100%!important;
+    object-fit:cover;object-position:50% 50%;
+  }
+  .room-heading .room-name{white-space:normal;overflow-wrap:anywhere}
+  .room .muted{font-size:1rem;line-height:1.72;overflow-wrap:anywhere}
+  .room-meta{gap:8px;margin:22px 0 0}
+  .room-meta li{font-size:.68rem;padding:.48rem .68rem}
+
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .amenity{gap:16px}
+  .amenity > div{min-width:0}
+  .amenity p{overflow-wrap:anywhere}
+}
+
+@media (max-width:600px){
+  :root{--gutter:20px}
+  .nav{padding:.72rem 20px}
+  .mark-logo{height:56px}
+  .burger{width:44px;height:44px}
+
+  .room-phero{min-height:620px}
+  .room-phero-media img{object-position:52% 50%;transform:none}
+  .room-phero .d1{font-size:clamp(2.7rem,15vw,4.2rem)}
+
+  .pad{padding-block:64px}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .stat{padding:28px 20px}
+
+  .rooms-list > .wrap{padding-inline:20px!important}
+  .rooms-list .room-media{width:100%!important;margin:0!important}
+  .rooms-list .room-media .figure{width:100%!important;aspect-ratio:5/3}
+  .room .eyebrow{line-height:1.5}
+  .room-heading{font-size:clamp(1.8rem,9vw,2.35rem)}
+
+  .cta .rv[style]{display:grid!important;grid-template-columns:minmax(0,1fr);gap:.75rem!important}
+  .cta .btn{width:100%;white-space:normal}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .foot-bottom{display:grid;grid-template-columns:minmax(0,1fr)}
+}
+</style>
 </head>
 <body>
 
@@ -49,17 +119,9 @@
   <p class="drawer-foot">Atlanta · Miami · Los Angeles</p>
 </nav>
 
-<section class="phero room-phero" data-room-hero>
+<section class="phero room-phero">
   <div class="phero-media room-phero-media">
-    <img class="on" src="assets/img/rooms-hero-01.jpeg" alt="Aerial night view of Aris Legacy Hotel with illuminated Aris Legacy monument signs" fetchpriority="high">
-    <img src="assets/img/rooms-hero-02.jpeg" alt="Front aerial view of Aris Legacy Hotel and its illuminated monument signs" loading="lazy" decoding="async">
-    <img src="assets/img/s1-arrival-day.jpg" alt="The arrival drive and principal elevation of the hotel in daylight" loading="lazy" decoding="async">
-    <img src="assets/img/s2-front-night.jpg" alt="The Aris Legacy Hotel illuminated at night from the forecourt" loading="lazy" decoding="async">
-  </div>
-  <div class="room-phero-controls" aria-label="Rooms hero images">
-    <button type="button" class="room-phero-prev" aria-label="Show previous hotel image">&#8592;</button>
-    <span><b class="room-phero-current">01</b> / 04</span>
-    <button type="button" class="room-phero-next" aria-label="Show next hotel image">&#8594;</button>
+    <img src="assets/img/rooms-hero-01.jpeg" alt="Aerial night view of Aris Legacy Hotel with illuminated Aris Legacy monument signs" fetchpriority="high">
   </div>
   <div class="wrap">
     <p class="crumb rv in"><a href="index.html">Aris Legacy</a> &nbsp;/&nbsp; Rooms</p>
@@ -100,7 +162,7 @@
   </div>
 </section>
 
-<section class="pad stone">
+<section class="pad stone rooms-list">
   <div class="wrap">
     <p class="eyebrow rv">The rooms</p>
     <h2 class="d2 rv rv-d1" style="margin-bottom:clamp(20px,3vw,40px)">Four ways to stay.</h2>
