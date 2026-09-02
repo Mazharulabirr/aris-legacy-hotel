@@ -706,12 +706,31 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
   .hero-facts{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:1180px){
+  /* Mobile browsers do not agree on sticky positioning when the page also
+     clips horizontal overflow. Pin the compact header to the viewport and
+     reserve the same space in the document so every page behaves alike. */
+  :root{--mobile-nav-height:109px}
+  body{padding-top:var(--mobile-nav-height)}
+  .nav{
+    position:fixed;inset:0 0 auto;height:var(--mobile-nav-height);
+  }
+  .drawer{
+    justify-content:flex-start;
+    padding-top:calc(var(--mobile-nav-height) + 1rem);
+    padding-bottom:max(2rem,env(safe-area-inset-bottom));
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
   .nav-links{display:none}
   .burger{display:flex}
   .nav-cta .btn{display:none}
   .foot-grid{grid-template-columns:1fr 1fr}
   .g4{grid-template-columns:repeat(2,1fr)}
   .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:900px){
+  :root{--mobile-nav-height:99px}
 }
 @media (max-width:820px){
   .g2,.g3,.split,.room,.ed{grid-template-columns:1fr}
@@ -726,6 +745,7 @@ body.consent-open .scroll-cue{opacity:0;visibility:hidden}
   .room-heading .room-name{white-space:normal}
 }
 @media (max-width:560px){
+  :root{--mobile-nav-height:89px}
   body{font-size:16px}
   .foot-grid{grid-template-columns:1fr}
   .stats{grid-template-columns:1fr}
